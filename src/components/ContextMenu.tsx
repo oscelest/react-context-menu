@@ -5,7 +5,7 @@ import ContextMenuDirection from "../enums/ContextMenuDirection";
 import ContextMenuList from "./ContextMenuList";
 
 function ContextMenu(props: ContextMenuProps) {
-  const {className, items, direction = ContextMenuDirection.BOTTOM_RIGHT, ...component_method_props} = props;
+  const {className, items, style = {}, direction = ContextMenuDirection.BOTTOM_RIGHT, ...component_method_props} = props;
   const {...component_props} = component_method_props;
 
   const [point, setPoint] = useState<Point>();
@@ -14,14 +14,22 @@ function ContextMenu(props: ContextMenuProps) {
   const parent = getParentRect(point);
   const container = getContainerRect(ref_element.current);
 
-  const style = {left: `${point?.x ?? 0}px`, top: `${point?.y ?? 0}px`}
+  if (point) {
+    style.left = `${point.x}px`;
+    style.top = `${point.y}px`;
+  }
+  else {
+    style.visibility = "hidden";
+    style.pointerEvents = "none";
+  }
+
   const classes = [Style.Component, "context-menu"];
   if (className) classes.push(className);
 
   return (
     <div {...component_props} ref={ref_element} className={classes.join(" ")} onContextMenu={onComponentContextMenu}>
       <div className={"context-menu-window"} style={style}>
-        <ContextMenuList direction={direction} list={items} container={container} parent={parent} onClick={hideContextMenu}/>
+        <ContextMenuList direction={direction} list={items} container={container} parent={parent} onClick={hideContextMenu} />
       </div>
       <div className={"context-menu-content"}>
         {props.children}
@@ -60,10 +68,7 @@ function getContainerRect(container?: Element | null) {
   return new Rect(0, 0, width - clientLeft * 2, height - clientTop * 2);
 }
 
-type ContextMenuBaseProps = Omit<React.HTMLAttributes<HTMLDivElement>, OmittedContextMenuBaseProps>;
-type OmittedContextMenuBaseProps = "style"
-
-export interface ContextMenuProps extends ContextMenuBaseProps {
+export interface ContextMenuProps extends React.HTMLAttributes<HTMLDivElement> {
   direction?: ContextMenuDirection;
   items?: ContextMenuItem[];
 }

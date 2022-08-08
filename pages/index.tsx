@@ -1,6 +1,7 @@
 import type {NextPage} from "next";
 import Style from "./index.module.scss";
 import ContextMenu, {ContextMenuItem} from "../src/components/ContextMenu";
+import {ContextMenuDirection} from "../src";
 
 const IndexPage: NextPage = () => {
   const items: ContextMenuItem[] = [
@@ -11,11 +12,23 @@ const IndexPage: NextPage = () => {
         {
           content: <span>Option 1.1</span>,
           callback: () => console.log("Option 1.1"),
-          item_list: []
+          item_list: [
+            {
+              content: <span>Option 1.1.1</span>,
+              callback: () => console.log("Option 1.1.1"),
+              item_list: [
+                {
+                  content: <span>Option 1.1.1.1</span>,
+                  callback: () => console.log("Option 1.1.1.1"),
+                  item_list: []
+                },
+              ]
+            },
+          ]
         },
         {
-          content: <span>Option 1.1</span>,
-          callback: () => console.log("Option 1.1"),
+          content: <span>Option 1.2</span>,
+          callback: () => console.log("Option 1.2"),
           item_list: []
         }
       ]
@@ -39,7 +52,7 @@ const IndexPage: NextPage = () => {
   ];
 
   return (
-    <ContextMenu className={Style.ElementPicker} items={items}>
+    <ContextMenu className={Style.ElementPicker} items={items} direction={ContextMenuDirection.BOTTOM_RIGHT}>
       <button>Test</button>
     </ContextMenu>
   );

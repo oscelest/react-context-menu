@@ -9,28 +9,26 @@ function ContextMenuList(props: ContextMenuListProps) {
   if (!list?.length) return null;
 
   const ref_element = useRef<HTMLDivElement>(null);
-
-  const current = ref_element.current ? Rect.fromSimpleRect(ref_element.current.getBoundingClientRect()) : new Rect(0, 0, 0, 0);
-
-  const {point, direction: next_direction} = getPointAndDirection(direction, current, parent, container);
-  const next_parent = new Rect(ref_element.current?.offsetWidth ?? 0, 0, 0, 0);
+  const {point, direction: next_direction} = getPointAndDirection(direction, ref_element.current, parent, container);
 
   style.left = `${point.x}px`;
   style.top = `${point.y}px`;
 
   return (
-    <div {...component_props} ref={ref_element} style={style} className={"context-menu-list"}>
+    <div {...component_props} ref={ref_element} className={"context-menu-list"} style={style}>
       {list.map(renderContextMenuItem)}
     </div>
   );
 
   function renderContextMenuItem(item: ContextMenuItem, index: number = 0) {
+    const next_parent = getParentRect(parent, point, index, ref_element.current);
+    console.log(next_parent);
 
     return (
       <div key={index} className={"context-menu-item"} onClick={onContextMenuItemClick}>
         <div className={"context-menu-item-arrow"}>-</div>
-        <ContextMenuList list={item.item_list} parent={next_parent} container={container} direction={next_direction} onClick={onClick}/>
-        <div>{item.content}</div>
+        <ContextMenuList list={item.item_list} parent={next_parent} container={container} direction={next_direction} onClick={onClick} />
+        <div className={"context-menu-item-content"}>{item.content}</div>
       </div>
     );
 
@@ -42,31 +40,48 @@ function ContextMenuList(props: ContextMenuListProps) {
   }
 }
 
-function getParentRect() {
+function getParentRect(parent: Rect, point: Point, index: number, element?: Element | null) {
+  const child = element?.children.item(index);
+  if (!element || !child) return new Rect(0, 0, 0, 0);
+  const element_rect = element.getBoundingClientRect()
+  const child_rect = child.getBoundingClientRect();
 
+  console.dir(element)
+  console.log(child_rect.x - element_rect.x);
+  const offset_x = child_rect.x - element_rect.x
+  const offset_y = child_rect.x - element_rect.x
+
+  return new Rect(
+    parent.x + point.x,
+    parent.y + point.y,
+    child_rect.width + offset_x,
+    child_rect.height + offset_y
+  );
 }
 
-function getPointAndDirection(direction: ContextMenuDirection, current: Rect, parent: Rect, container: Rect): {point: Point; direction: ContextMenuDirection} {
+function getPointAndDirection(direction: ContextMenuDirection, current: HTMLElement | null, parent: Rect, container: Rect): {point: Point; direction: ContextMenuDirection} {
   const point = new Point(0, 0);
+  if (!current) return {direction, point};
+  const {offsetWidth: width, offsetHeight: height} = current;
 
   if (direction === ContextMenuDirection.BOTTOM_RIGHT || direction === ContextMenuDirection.TOP_RIGHT) {
-    if (parent.x + parent.width + current.width < container.width) {
-      point.x = parent.x + parent.width;
+    if (parent.x + parent.width + width < container.width) {
+      point.x = parent.width;
     }
-    else if (parent.x - current.width > 0) {
-      point.x = parent.x - current.width;
+    else if (parent.x - width > 0) {
+      point.x = -width;
       direction = direction === ContextMenuDirection.BOTTOM_RIGHT ? ContextMenuDirection.BOTTOM_LEFT : ContextMenuDirection.TOP_LEFT;
     }
     else {
-      point.x = container.width;
+      point.x = container.width - width;
     }
   }
   else {
-    if (parent.x - current.width > 0) {
-      point.x = parent.x - current.width;
+    if (parent.x - width > 0) {
+      point.x = -width;
     }
-    else if (parent.x + parent.width + current.width < container.width) {
-      point.x = parent.x + parent.width;
+    else if (parent.x + parent.width + width < container.width) {
+      point.x = parent.width;
       direction = direction === ContextMenuDirection.BOTTOM_LEFT ? ContextMenuDirection.BOTTOM_RIGHT : ContextMenuDirection.TOP_RIGHT;
     }
     else {
@@ -75,23 +90,24 @@ function getPointAndDirection(direction: ContextMenuDirection, current: Rect, pa
   }
 
   if (direction === ContextMenuDirection.BOTTOM_RIGHT || direction === ContextMenuDirection.BOTTOM_LEFT) {
-    if (parent.y + parent.height + current.height < container.height) {
-      point.y = parent.y + parent.height;
+    if (parent.y + height < container.height) {
+      point.y = -current.clientTop;
     }
-    else if (parent.y - current.height > 0) {
-      point.y = parent.y - current.height;
+    else if (parent.y + parent.height - height > 0) {
+      point.y = parent.height - height;
       direction = direction === ContextMenuDirection.BOTTOM_LEFT ? ContextMenuDirection.TOP_LEFT : ContextMenuDirection.TOP_RIGHT;
     }
     else {
-      point.y = container.height;
+      // TODO: Should be bottom edge relative to current position
+      point.y = parent.y;
     }
   }
   else {
-    if (parent.y - current.height > 0) {
-      point.y = parent.y - current.height;
+    if (parent.y + parent.height - height > 0) {
+      point.y = parent.height - height;
     }
-    else if (parent.y + parent.height + current.height < container.height) {
-      point.y = parent.y + parent.height;
+    else if (parent.y + height < container.height) {
+      point.y = -current.clientTop;
       direction = direction === ContextMenuDirection.TOP_LEFT ? ContextMenuDirection.BOTTOM_LEFT : ContextMenuDirection.BOTTOM_RIGHT;
     }
     else {
