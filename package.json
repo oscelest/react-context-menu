@@ -30,7 +30,7 @@
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.3.4",
-    "@types/react": "^18.0.16",
+    "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "next": "^12.2.4",
     "react-dom": "^18.2.0",
