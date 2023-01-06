@@ -1,38 +1,53 @@
 
 .Component:global(.context-menu) {
-    user-select: none;
+  user-select: none;
 }
 
 .Component:global(.context-menu .context-menu-window) {
-    position: absolute;
-    z-index: 100;
+  position: absolute;
+  z-index:  100;
 }
 
 .Component:global(.context-menu .context-menu-list) {
-    display: flex;
-    flex-flow: column;
-    position: absolute;
-    background-color: white;
-    border: 1px solid black;
-    border-radius: 4px;
+  display:          flex;
+  flex-flow:        column;
+  position:         absolute;
+  background-color: white;
+  border:           1px solid black;
+  border-radius:    4px;
 }
 
 .Component:global(.context-menu .context-menu-item) {
-    display: flex;
-    flex: 0 0 auto;
-    flex-flow: row;
-    position: relative;
-    padding: 5px;
+  display:   flex;
+  flex:      0 0 auto;
+  flex-flow: row;
+  position:  relative;
+  color:     black;
+  cursor:    default;
+}
+
+
+.Component:global(.context-menu .context-menu-item:hover) {
+  background-color: HighLight;
+  color:            HighlightText;
+}
+
+.Component:global(.context-menu .context-menu-item[data-clickable="true"]) {
+  cursor: pointer;
+}
+
+.Component:global(.context-menu .context-menu-item[data-clickable="false"]) {
+  cursor: default;
 }
 
 .Component:global(.context-menu .context-menu-item-content) {
-    display: flex;
-    flex-flow: column;
-    white-space: nowrap;
-    word-break: keep-all;
+  display:     flex;
+  flex-flow:   column;
+  white-space: nowrap;
+  word-break:  keep-all;
 }
 
 .Component:global(.context-menu .context-menu-item:not(:hover) > .context-menu-list) {
-    pointer-events: none;
-    visibility: hidden;
+  pointer-events: none;
+  visibility:     hidden;
 }

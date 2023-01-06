@@ -3,6 +3,7 @@ import React, {useState, useRef} from "react";
 import {Point, Rect} from "@noxy/geometry";
 import ContextMenuDirection from "../enums/ContextMenuDirection";
 import ContextMenuList from "./ContextMenuList";
+import {ContextMenuItem} from "../interfaces";
 
 function ContextMenu(props: ContextMenuProps) {
   const {className, items, style = {}, direction = ContextMenuDirection.BOTTOM_RIGHT, ...component_method_props} = props;
@@ -25,6 +26,8 @@ function ContextMenu(props: ContextMenuProps) {
 
   const classes = [Style.Component, "context-menu"];
   if (className) classes.push(className);
+
+  console.log("render", items)
 
   return (
     <div {...component_props} ref={ref_element} className={classes.join(" ")} onContextMenu={onComponentContextMenu}>
@@ -73,11 +76,6 @@ export interface ContextMenuProps extends React.HTMLAttributes<HTMLDivElement> {
   items?: ContextMenuItem[];
 }
 
-export interface ContextMenuItem {
-  content: React.ReactNode;
-  callback: (event: React.MouseEvent<HTMLDivElement>) => void;
-  item_list?: ContextMenuItem[];
-}
 
 
 export default ContextMenu;
