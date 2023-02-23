@@ -1,0 +1,52 @@
+{
+  "name":             "@noxy/react-dialog",
+  "author":           "oscelest",
+  "version":          "1.0.2",
+  "description":      "A dialog component and hook to use with react functional components.",
+  "license":          "MIT",
+  "repository":       {
+    "type": "git",
+    "url":  "git@github.com:oscelest/react-dialog.git"
+  },
+  "bugs":             {
+    "url": "https://github.com/oscelest/react-dialog/issues"
+  },
+  "publishConfig":    {
+    "access": "public"
+  },
+  "main":             "dist/cjs/index.js",
+  "types":            "dist/types/index.d.ts",
+  "module":           "dist/esm/index.js",
+  "umd":              "dist/umd/index.js",
+  "files":            [
+    "dist"
+  ],
+  "scripts":          {
+    "update":   "npx npm-check-updates -u && npm i",
+    "build":    "rollup -c",
+    "test:app": "next dev"
+  },
+  "dependencies":     {
+    "uuid":               "^9.0.0",
+    "@noxy/react-button": "^1.0.0",
+    "@noxy/geometry":     "^0.2.6"
+  },
+  "devDependencies":  {
+    "@rollup/plugin-commonjs":          "^24.0.1",
+    "@rollup/plugin-node-resolve":      "^15.0.1",
+    "@rollup/plugin-terser":            "^0.4.0",
+    "@rollup/plugin-typescript":        "^11.0.0",
+    "@types/node":                      "^18.14.0",
+    "@types/react":                     "^18.0.28",
+    "@types/uuid":                      "^9.0.1",
+    "next":                             "^13.1.6",
+    "rollup":                           "^3.17.2",
+    "rollup-plugin-dts":                "^5.2.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss":            "^4.0.2",
+    "typescript":                       "^4.9.5"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}

@@ -1,0 +1,30 @@
+.Component {
+  display:   flex;
+  flex:      0 0 auto;
+  flex-flow: row;
+  position:  relative;
+  z-index:   0;
+}
+
+.Component :global(.list) {
+  box-sizing:       border-box;
+  position:         fixed;
+  left:             100%;
+  z-index:          0;
+  white-space:      nowrap;
+  background-color: white;
+  border:           1px solid black;
+}
+
+.Component > :global(.list >  *) {
+  padding: 5px;
+}
+
+.Component > :global(.list >  *:hover) {
+  background-color: #beefed55;
+}
+
+.Component:not(:hover) :global(.list) {
+  visibility:     hidden;
+  pointer-events: none;
+}
