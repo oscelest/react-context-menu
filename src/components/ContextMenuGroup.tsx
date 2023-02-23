@@ -3,8 +3,9 @@ import React, {CSSProperties, DetailedHTMLProps, HTMLAttributes, ReactElement, R
 import {v4} from "uuid";
 import Style from "./ContextMenuGroup.module.css";
 
-export function ContextMenuGroup(props: ContextMenuItemProps) {
-  const {label, container, className, children, ...component_method_props} = props;
+export function ContextMenuGroup(props: ContextMenuGroupProps) {
+  const {"data-container": container, ...component_html_props} = props as ExtendedContextMenuGroupProps;
+  const {label, className, children, ...component_method_props} = component_html_props;
   const {...component_props} = component_method_props;
   
   const ref_main = useRef<HTMLDivElement>(null);
@@ -17,22 +18,19 @@ export function ContextMenuGroup(props: ContextMenuItemProps) {
       const main_rect = ref_main.current.getBoundingClientRect();
       const list_rect = ref_list.current.getBoundingClientRect();
       
-      const x = container.containsX(main_rect.right + list_rect.width)
+      const point = new Point(0, 0);
+      point.x = container.containsX(main_rect.right + list_rect.width)
                 ? main_rect.right
                 : main_rect.left - list_rect.width;
       
-      let y = 0;
       if (ref_main.current.parentElement) {
         const {offsetHeight, clientHeight, clientTop} = ref_main.current.parentElement;
-        if (container.containsY(main_rect.bottom + list_rect.height)) {
-          y = main_rect.top - clientTop;
-        }
-        else {
-          y = main_rect.bottom - list_rect.height + (offsetHeight - clientHeight - clientTop);
-        }
+        point.y = !container.containsY(main_rect.bottom + list_rect.height)
+                  ? main_rect.bottom - list_rect.height + (offsetHeight - clientHeight - clientTop)
+                  : main_rect.top - clientTop;
       }
       
-      setPoint(new Point(x, y));
+      setPoint(point);
     },
     [container]
   );
@@ -61,13 +59,13 @@ export function ContextMenuGroup(props: ContextMenuItemProps) {
     const {type, props} = children as ReactElement;
     if (type === ContextMenuGroup) {
       return (
-        <ContextMenuGroup {...props} key={v4()} container={container}/>
+        <ContextMenuGroup {...props} key={v4()} data-container={container}/>
       );
     }
     else if (type === React.Fragment) {
       return (children as ReactElement).props.children.map(renderChildren);
     }
-    
+  
     return children;
   }
   
@@ -75,7 +73,10 @@ export function ContextMenuGroup(props: ContextMenuItemProps) {
 
 type HTMLComponentProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
-interface ContextMenuItemProps extends HTMLComponentProps {
+interface ExtendedContextMenuGroupProps extends ContextMenuGroupProps {
+  "data-container": Rect;
+}
+
+interface ContextMenuGroupProps extends HTMLComponentProps {
   label: ReactNode;
-  container?: Rect;
 }

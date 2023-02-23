@@ -1,27 +1,27 @@
 .Component {
-  display:   flex;
-  flex:      0 0 auto;
-  flex-flow: row;
-  position:  relative;
-  z-index:   0;
+  position:         relative;
+  z-index:          100;
+  background-color: white;
+}
+
+.Component:hover {
+  z-index: 200;
 }
 
 .Component :global(.list) {
+  position:         fixed !important;
   box-sizing:       border-box;
-  position:         fixed;
-  left:             100%;
-  z-index:          0;
-  white-space:      nowrap;
-  background-color: white;
   border:           1px solid black;
+  background-color: white;
+  white-space:      nowrap !important;
 }
 
-.Component > :global(.list >  *) {
+.Component > :global(.list > *) {
   padding: 5px;
 }
 
-.Component > :global(.list >  *:hover) {
-  background-color: #beefed55;
+.Component > :global(.list > *:hover) {
+  background-color: highlight;
 }
 
 .Component:not(:hover) :global(.list) {

@@ -53,7 +53,7 @@ export function ContextMenu(props: ContextMenuProps) {
     if (type === ContextMenuGroup) {
       const container = Rect.fromSimpleRect(ref.current?.parentElement?.getBoundingClientRect());
       return (
-        <ContextMenuGroup {...props} key={v4()} container={container}/>
+        <ContextMenuGroup {...props} key={v4()} data-container={container}/>
       );
     }
     else if (type === React.Fragment) {
@@ -70,15 +70,14 @@ export function ContextMenu(props: ContextMenuProps) {
   
   function onWindowContextMenu(event: MouseEvent) {
     if (!ref.current || !ref.current.parentElement || !(event.target instanceof Element) || !ref.current.parentElement.contains(event.target)) return;
-    
+  
     event.preventDefault();
     const {width, height} = ref.current?.getBoundingClientRect();
-    const rect = new Rect(event.pageX, event.pageY, width, height);
     const parent_rect = Rect.fromSimpleRect(ref.current.parentElement.getBoundingClientRect());
-    
-    const x = parent_rect.containsX(rect.right) ? event.pageX : event.pageX - rect.width;
-    const y = parent_rect.containsY(rect.bottom) ? event.pageY : event.pageY - rect.height;
-    
+  
+    const x = parent_rect.containsX(event.pageX + width) ? event.pageX : event.pageX - width;
+    const y = parent_rect.containsY(event.pageY + height) ? event.pageY : event.pageY - height;
+  
     setPoint(new Point(x, y));
     setActive(true);
   }

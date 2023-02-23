@@ -1,12 +1,8 @@
 .Component {
-  display:          flex;
-  flex:             0 0 auto;
-  flex-flow:        column;
-  box-sizing:       border-box;
-  position:         fixed;
-  z-index:          0;
-  background-color: white;
+  position:         fixed !important;
+  z-index:          100;
   border:           1px solid black;
+  background-color: white;
 }
 
 .Component > * {
@@ -14,5 +10,5 @@
 }
 
 .Component > *:hover {
-  background-color: #beefed55;
+  background-color: highlight;
 }
