@@ -85,6 +85,6 @@ export function ContextMenu(props: ContextMenuProps) {
 
 type HTMLComponentProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
-interface ContextMenuProps extends HTMLComponentProps {
+export interface ContextMenuProps extends HTMLComponentProps {
   contained?: boolean;
 }

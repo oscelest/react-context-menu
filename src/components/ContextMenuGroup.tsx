@@ -77,6 +77,6 @@ interface ExtendedContextMenuGroupProps extends ContextMenuGroupProps {
   "data-container": Rect;
 }
 
-interface ContextMenuGroupProps extends HTMLComponentProps {
+export interface ContextMenuGroupProps extends HTMLComponentProps {
   label: ReactNode;
 }
