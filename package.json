@@ -26,10 +26,10 @@
     "build":    "rollup -c",
     "test:app": "next dev"
   },
-  "dependencies":    {
+  "dependencies": {
     "uuid":               "^9.0.0",
-    "@noxy/react-button": "^1.0.1",
-    "@noxy/geometry":     "^0.2.6"
+    "@noxy/react-button": "^1.0.2",
+    "@noxy/geometry":     "^0.2.7"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs":          "^24.0.1",
