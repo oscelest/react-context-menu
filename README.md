@@ -4,7 +4,7 @@
 
 `react-dialog` is a [React](https://reactjs.org/) functional component hook which creates a dialog renderer element and a dialog creation function.
 The dialog is only a container element and wrapper and does not come with any dialog templates.
-Child elements added to the dialog component will have access to the Dialog object through the DialogContext.
+Child elements added to the dialog component will have access to the DialogInstance object through the DialogContext.
 
 ## Installation
 
@@ -88,8 +88,8 @@ Determines if a close button should be shown inside the dialog that can be click
 
 **Default value**: `true`
 
-### onClose: callback(dialog: Dialog): void
+### onClose: callback(dialog: DialogInstance): void
 
-A callback function which is called when the dialog is dismissed or closed, either through the close button, the overlay, or the Dialog close method.
+A callback function which is called when the dialog is dismissed or closed, either through the close button, the overlay, or the DialogInstance close method.
 
 **Default value**: `undefined`
