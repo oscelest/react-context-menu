@@ -1,6 +1,5 @@
 import React from "react";
-import {ContextMenu} from "../src/components/ContextMenu";
-import {ContextMenuGroup} from "../src/components/ContextMenuGroup";
+import {ContextMenu, ContextMenuGroup} from "../src";
 import Style from "./index.module.css";
 
 function IndexPage() {

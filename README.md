@@ -1,17 +1,16 @@
-# react-dialog
+# react-context-menu
 
 ## Introduction
 
-`react-dialog` is a [React](https://reactjs.org/) functional component hook which creates a dialog renderer element and a dialog creation function.
-The dialog is only a container element and wrapper and does not come with any dialog templates.
-Child elements added to the dialog component will have access to the DialogInstance object through the DialogContext.
+`react-context-menu` is a [React](https://reactjs.org/) functional component which assists in creating custom nested context menus.
+The context menu will automatically attempt to fit inside the screen.
 
 ## Installation
 
 To install run the following command:
 
 ```shell
-npm install @noxy/react-dialog@latest
+npm install @noxy/react-context-menu@latest
 ```
 
 Typescript types are already available in the library so no need to get external types.
@@ -21,75 +20,75 @@ Typescript types are already available in the library so no need to get external
 The following is an example of how to use the component:
 
 ```typescript jsx
-import {useDialog, DialogContext} from "@noxy/react-dialog";
-import React, {HTMLProps, useContext} from "react";
+import {ContextMenu, ContextMenuGroup} from "@noxy/react-dialog";
 
-function TestComponent(props: HTMLProps<HTMLDivElement>) {
-  const [dialog, createDialog] = useDialog();
+function TestComponent() {
   
   return (
-    <>
+    <ContextMenu>
+      <>
+        <div>
+          <span>Option 1</span>
+        </div>
+        <div>
+          <span>Option 2</span>
+        </div>
+      </>
       <div>
-        <button onClick={onButtonClick}>Hello</button>
+        <span>Option 3</span>
       </div>
-      {dialog}
-    </>
+      <ContextMenuGroup label={"Option 4"}>
+        <div>
+          <span>Option 4.1</span>
+        </div>
+        <div>
+          <span>Option 4.2</span>
+        </div>
+      </ContextMenuGroup>
+      <ContextMenuGroup label={"Option 5"}>
+        <ContextMenuGroup label={"Option 5.1"}>
+          <div>
+            <span>Option 5.1.1</span>
+          </div>
+          <div>
+            <span>Option 5.1.2</span>
+          </div>
+        </ContextMenuGroup>
+        <div>
+          <span>Option 5.2</span>
+        </div>
+        <div>
+          <span>Option 5.3</span>
+        </div>
+      </ContextMenuGroup>
+      <>
+        <ContextMenuGroup label={"Option 6"}>
+          <div>
+            <span>Option 6.1</span>
+          </div>
+          <div>
+            <span>Option 6.2</span>
+          </div>
+        </ContextMenuGroup>
+        <div>
+          <span>Option 7</span>
+        </div>
+      </>
+    </ContextMenu>
   );
-  
-  function onButtonClick() {
-    createDialog({
-      children: <DialogComponent/>
-    });
-  }
 }
-
-function DialogComponent() {
-  const dialog = useContext(DialogContext)
-  
-  return (
-    <div className={"dialog"}>
-      World!
-      <button onClick={onButtonClick}>Ok</button>
-    </div>
-  )
-  
-  function onButtonClick() {
-    dialog.close();
-  }
-}
-
 ```
 
-The `useDialog` hook takes a namespace as argument. This is the namespace which the dialogs created by the `createDialog` function will be stored.
-The `dialog` renderer supplied by the hook will display only dialogs from that namespace. The default namespace is `"global"`.
+A `ContextMenu` is defined as the outer element. Each element inside the context menu is considered its own context menu item.
+To created a nested list of menu items, add a `ContextMenuGroup` element inside the `ContextMenu`. `ContextMenuGroup` items can be infinitely nested.
 
 ## Properties
 
-The `DialogInstance` component inherits all HTMLDivElement properties and applies them directly to the outermost element.
+The `ContextMenu` component inherits all HTMLDivElement properties and applies them directly to the outermost element.
 This includes the className property for those using CSS modules.
 
-### overlay: boolean
+### contained: boolean
 
-Determines if an overlay should be shown behind the dialog, disabling clicking on anything behind the dialog.
+Determines if the ContextMenu should be contained inside it's direct parent rather than the fullscreen.
 
-**Default value**: `true`
-
-### dismissible: boolean
-
-Only relevant if overlay is set to true.
-Determines if the dialog should be able to be dismissed by clicking on the overlay behind the dialog.
-Dismissing a dialog in this way will trigger the onClose handler.
-
-**Default value**: `true`
-
-### closeable: boolean
-
-Determines if a close button should be shown inside the dialog that can be clicked to close the dialog.
-
-**Default value**: `true`
-
-### onClose: callback(dialog: DialogInstance): void
-
-A callback function which is called when the dialog is dismissed or closed, either through the close button, the overlay, or the DialogInstance close method.
-
-**Default value**: `undefined`
+**Default value**: `false`
